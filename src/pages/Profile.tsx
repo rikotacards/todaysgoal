@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../contexts/AuthContext";
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 import { ProfileLoggedIn } from "./ProfileLoggedIn";
 import { mockGoals } from "../mocks/goals.mock";
