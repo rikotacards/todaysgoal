@@ -32,7 +32,7 @@ export const Goal: React.FC<IAddedGoal & { isOwner?: boolean }> = ({
   };
   return (
     <>
-      <Card onClick={onClick} sx={{ width: "100%", mb: 1, pr: 1 }}>
+      <Card variant='outlined' onClick={onClick} sx={{ width: "100%", mb: 1, pr: 1 }}>
         <Box
           sx={{
             p: 1,
