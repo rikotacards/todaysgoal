@@ -44,12 +44,35 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
   };
   if (isSmall) {
     return (
-      <Drawer open={open} onClose={onClose}>
-        <Box>
-          <TextField value={desc} onChange={onChange} />
-          <Button variant='contained' loading={add.isPending} onClick={onSave}>
+      <Drawer
+        anchor="bottom"
+        slotProps={{
+          paper: {
+            style: {
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            },
+          },
+        }}
+        ModalProps={{
+          keepMounted: false, // ensures body styles get removed
+        }}
+        open={open}
+        onClose={onClose}
+      >
+        <Box sx={{display: 'flex', flexDirection: 'column'}}>
+          <Toolbar><Typography fontWeight={'bold'}>Add goal</Typography>
+          <Box sx={{ml:'auto'}}>
+            <IconButton onClick={onClose}><Close/></IconButton>
+          </Box>
+          </Toolbar>
+          <Box sx={{p:2, display: 'flex', flexDirection: 'column'}}>
+          <Typography color='textSecondary' variant="caption" sx={{mb:1}}>Be descriptive and intentional</Typography>
+          <TextField placeholder="What will you achieve today?" value={desc} onChange={onChange} />
+          <Button sx={{mt:1}} variant="contained" loading={add.isPending} onClick={onSave}>
             Save
           </Button>
+          </Box>
         </Box>
       </Drawer>
     );

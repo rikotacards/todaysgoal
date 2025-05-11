@@ -10,15 +10,18 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useUsernames } from "../hooks/queries/useUsernames";
-import {  ChevronRight, Error, Info } from "@mui/icons-material";
+import { ChevronRight, Error, Info } from "@mui/icons-material";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useAddUsername } from "../hooks/mutations/useAddUsername";
 import { useEditUsername } from "../hooks/mutations/useEditUsername";
 interface CreateUsernameProps {
-    existingUsername?: string;
-    onSubmit?: () => void;
+  existingUsername?: string;
+  onSubmit?: () => void;
 }
-export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existingUsername}) => {
+export const CreateUsername: React.FC<CreateUsernameProps> = ({
+  onSubmit,
+  existingUsername,
+}) => {
   const [username, setUsername] = React.useState(existingUsername);
   const [isLoading, setLoading] = React.useState(false);
   const [hasError, setError] = React.useState(false);
@@ -27,8 +30,8 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existin
   const add = useAddUsername();
   const update = useEditUsername();
   const onCreate = async () => {
-    if(!username){
-        return;
+    if (!username) {
+      return;
     }
     setLoading(true);
     setError(false);
@@ -38,12 +41,14 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existin
       if (!a.data?.user.id) {
         return;
       }
-      (existingUsername ? update :  add).mutateAsync({
-        user_id: a.data.user.id,
-        username,
-      }).then(() => {
-        onSubmit?.();
-      })
+      (existingUsername ? update : add)
+        .mutateAsync({
+          user_id: a.data.user.id,
+          username,
+        })
+        .then(() => {
+          onSubmit?.();
+        });
     } else {
       setError(true);
       console.log("DD", data);
@@ -52,11 +57,17 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existin
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(false);
-    setUsername(e.target.value.trim());
+    if (
+      e.target.value === "settings" ||
+      e.target.value === "setting" ||
+      e.target.value === "profile" ||
+      e.target.value === 'home'
+    )
+      setUsername(e.target.value.trim().toLocaleLowerCase());
   };
   const adornment = isLoading ? (
     <Box>
-      <CircularProgress sx={{height:20, width:20}} size={'small'} />
+      <CircularProgress sx={{ height: 20, width: 20 }} size={"small"} />
     </Box>
   ) : hasError ? (
     <Error color="error" />
@@ -67,26 +78,32 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existin
   );
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Typography fontWeight={'bold'} variant="body2" sx={{mb:1}} color="textSecondary">
-       {existingUsername ? 'Update username' : 'Create a username'}
-      </Typography>
-      {existingUsername ? null:<Box
-
-        component={Paper}
-        variant="outlined"
-        sx={{
-          mb: 1,
-          alignItem: "center",
-          p: 1,
-          display: "flex",
-          flexDirection: "row",
-        }}
+      <Typography
+        fontWeight={"bold"}
+        variant="body2"
+        sx={{ mb: 1 }}
+        color="textSecondary"
       >
-        <Info color="action" sx={{ mr: 1 }} />
-        <Typography variant="body2" color="textSecondary">
-          Your profile won't be visible until you create a username.
-        </Typography>
-      </Box>}
+        {existingUsername ? "Update username" : "Create a username"}
+      </Typography>
+      {existingUsername ? null : (
+        <Box
+          component={Paper}
+          variant="outlined"
+          sx={{
+            mb: 1,
+            alignItem: "center",
+            p: 1,
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Info color="action" sx={{ mr: 1 }} />
+          <Typography variant="body2" color="textSecondary">
+            Your profile won't be visible until you create a username.
+          </Typography>
+        </Box>
+      )}
       <OutlinedInput
         endAdornment={
           <InputAdornment position="end">{adornment}</InputAdornment>
@@ -101,7 +118,11 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({onSubmit, existin
           Username already exists
         </Typography>
       )}
-    {existingUsername &&   <Button variant='outlined' sx={{mt:1}} onClick={onSubmit}>Cancel</Button>}
+      {existingUsername && (
+        <Button variant="outlined" sx={{ mt: 1 }} onClick={onSubmit}>
+          Cancel
+        </Button>
+      )}
     </Box>
   );
 };

@@ -27,7 +27,7 @@ export const PublicProfile: React.FC = () => {
   const goals = useGoals(userId?.data?.user_id || "");
   const goalsByDate = groupGoalsByDate(goals.data);
   if (goals.isLoading) {
-    return <CircularProgress />;
+    return <Box sx={{display:'flex', width:'100%', justifyContent: 'center', alignItems: 'center'}}><CircularProgress /></Box>;
   }
   if (!userId.data) {
     return (
@@ -41,7 +41,7 @@ export const PublicProfile: React.FC = () => {
       <Box sx={{ mb: 2 }}>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Typography fontWeight={"bold"} variant="h4">
-            Today's Goals For
+            Today's Goals for
           </Typography>
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
             {isCopied ? (

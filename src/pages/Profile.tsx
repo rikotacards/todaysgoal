@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../contexts/AuthContext";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography, useTheme } from "@mui/material";
 
 import { ProfileLoggedIn } from "./ProfileLoggedIn";
 import { mockGoals } from "../mocks/goals.mock";
@@ -12,21 +12,19 @@ import { useSignInWithGoogle } from "../hooks/mutations/useSignInWithGoogle";
 export const Profile: React.FC = () => {
   const a = useAuthContext();
   const s = useSignInWithGoogle();
+  const t = useTheme();
   const onClick = () => {
-    if (isInstagram()) {
-      window.open("https://todaysgoal.com", "_blank");
-    } else {
-      s.mutateAsync();
-    }
+    s.mutateAsync();
   };
 
   const goalsByDate = groupGoalsByDate(mockGoals);
   if (a.isPending) {
-    return <CircularProgress />;
+    
+    return <Box sx={{display:'flex', width:'100%', justifyContent: 'center', alignItems: 'center'}}><CircularProgress /></Box>;
   }
   if (!a.data?.user) {
     return (
-      <Box sx={{p:2}}>
+      <Box sx={{ p: 2 }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Typography fontWeight={"bold"} variant="h4">
@@ -40,16 +38,25 @@ export const Profile: React.FC = () => {
               flexDirection: "row",
             }}
           >
-            <Typography variant="h4">Bob</Typography>
+            <Typography variant="h4">You</Typography>
             <Box></Box>
           </Box>
         </Box>
         {goalsByDate.map((g) => (
           <GoalsByDate date={g.date} goals={g.goals} />
         ))}
-        <Button disableElevation onClick={onClick} variant="contained" sx={{ mt: 1 }} fullWidth>
-          Sign up with Google
-        </Button>
+
+        {!isInstagram() ? (
+          <Box sx={{mt:2, width:'100%'}}>
+          <a style={{display: 'block', textAlign: 'center',  width:'100%', textDecoration: 'none', background: t.palette.primary.main, color: 'black', padding: 8, borderRadius: 4}} href="x-safari-https://todaysgoal.com">
+            Sign up with Google
+          </a>
+          </Box>
+        ) : (
+          <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={onClick}>
+            Sign up with Google
+          </Button>
+        )}
       </Box>
     );
   }
