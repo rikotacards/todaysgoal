@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import {
 
   Close,
@@ -26,8 +28,10 @@ export const EditGoal: React.FC<EditGoalProps> = ({
   description,
   open,
   onClose,
+  isDone
 }) => {
   const update = useEditGoal();
+  const updateDone = useEditGoal();
   const d = useDeleteGoal();
   const [desc, setDesc] = React.useState(description);
 
@@ -37,6 +41,14 @@ export const EditGoal: React.FC<EditGoalProps> = ({
   const onDelete = () => {
     d.mutateAsync({ id }).then(() => onClose());
   };
+
+  const onDone = async () => {
+    await updateDone.mutateAsync({
+      id, 
+      is_done: !isDone
+    })
+    onClose();
+  }
   const onUpdate = () => {
     update
       .mutateAsync({
@@ -62,22 +74,24 @@ export const EditGoal: React.FC<EditGoalProps> = ({
         <Box sx={{ display: "flex", flexDirection: "column", p: 2, minWidth: 300 }}>
           <TextField multiline onChange={onChange} value={desc} />
           <Button
-            variant={desc !== description ? "contained" : "outlined"}
-            sx={{ mt: 1, mb: 2 }}
+          startIcon={isDone ? <CheckCircleIcon/> : <RadioButtonUncheckedIcon/> }
+          loading={updateDone.isPending}
+          onClick={onDone} variant='outlined' color={isDone ? 'success' : undefined} sx={{textTransform: 'capitalize', mt:1}}>{isDone ? 'Done' : 'mark as done'}</Button>
+          <Button
+            variant={desc !== description ? "contained" : undefined}
+            sx={{ mt: 1, mb: 1 }}
             loading={update.isPending}
             onClick={onUpdate}
           >
             Save
           </Button>
           <Button
-            variant="outlined"
             sx={{ mb: 1 }}
             onClick={onClose}
           >
             Cancel
           </Button>
           <Button
-            variant="outlined"
             loading={d.isPending}
             color="error"
             onClick={onDelete}
