@@ -22,13 +22,15 @@ interface EditGoalProps {
   id: number;
   description: string;
   isDone: boolean;
+  isDemo?: boolean;
 }
 export const EditGoal: React.FC<EditGoalProps> = ({
   id,
   description,
   open,
   onClose,
-  isDone
+  isDone, 
+  isDemo
 }) => {
   const update = useEditGoal();
   const updateDone = useEditGoal();
@@ -39,10 +41,18 @@ export const EditGoal: React.FC<EditGoalProps> = ({
     setDesc(e.target.value);
   };
   const onDelete = () => {
+    if(isDemo){
+      onClose();
+      return
+    }
     d.mutateAsync({ id }).then(() => onClose());
   };
 
   const onDone = async () => {
+    if(isDemo){
+      onClose();
+      return;
+    }
     await updateDone.mutateAsync({
       id, 
       is_done: !isDone
@@ -50,6 +60,10 @@ export const EditGoal: React.FC<EditGoalProps> = ({
     onClose();
   }
   const onUpdate = () => {
+    if(isDemo){
+      onClose();
+      return;
+    }
     update
       .mutateAsync({
         id,

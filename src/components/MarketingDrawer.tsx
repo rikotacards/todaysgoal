@@ -83,7 +83,7 @@ export const MarketingDrawer: React.FC = () => {
         </Card>
 
         <Box sx={{ p: 1 }}>
-          {!isInstagram() ? (
+          {isInstagram() ? (
             <Box sx={{ mt: 2, width: "100%" }}>
               <a
                 style={{

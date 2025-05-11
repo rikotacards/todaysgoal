@@ -5,7 +5,7 @@ import { useSignOut } from "../hooks/mutations/useSignOut";
 export const Settings: React.FC = () => {
   const signOut = useSignOut();
   return (
-    <Box>
+    <Box sx={{p:2}}>
       <Typography fontWeight={"bold"} sx={{ mb: 1 }}>
         Settings
       </Typography>

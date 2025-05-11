@@ -43,10 +43,10 @@ export const Profile: React.FC = () => {
           </Box>
         </Box>
         {goalsByDate.map((g) => (
-          <GoalsByDate date={g.date} goals={g.goals} />
+          <GoalsByDate isDemo date={g.date} goals={g.goals} />
         ))}
 
-        {!isInstagram() ? (
+        {isInstagram() ? (
           <Box sx={{mt:2, width:'100%'}}>
           <a style={{display: 'block', textAlign: 'center',  width:'100%', textDecoration: 'none', background: t.palette.primary.main, color: 'black', padding: 8, borderRadius: 4}} href="x-safari-https://todaysgoal.com">
             Sign up with Google

@@ -6,13 +6,15 @@ import { useAuthContext } from "../contexts/AuthContext";
 interface GoalsProps {
   goals?: IAddedGoal[];
   isOwner?: boolean;
+  isDemo?: boolean;
 }
-export const Goals: React.FC<GoalsProps> = ({isOwner, goals }) => {
+export const Goals: React.FC<GoalsProps> = ({isDemo, isOwner, goals }) => {
   const a = useAuthContext();
   const uid = a.data?.user.id; 
 
   const displayGoals = goals?.map((g) => (
     <Goal
+    isDemo={isDemo}
     isOwner={isOwner === undefined ? uid === g.user_id: isOwner}
       id={g.id}
       key={g.id}

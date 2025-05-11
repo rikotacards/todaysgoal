@@ -7,6 +7,7 @@ interface GoalsByDateProps {
   date: string;
   goals: IAddedGoal[];
   isOwner?: boolean;
+  isDemo?: boolean;
 }
 const options: Intl.DateTimeFormatOptions = {
   weekday: "short",
@@ -14,7 +15,7 @@ const options: Intl.DateTimeFormatOptions = {
   day: "numeric",
   year: "numeric",
 };
-export const GoalsByDate: React.FC<GoalsByDateProps> = ({ date, goals, isOwner }) => {
+export const GoalsByDate: React.FC<GoalsByDateProps> = ({isDemo,  date, goals, isOwner }) => {
   const now = new Date().toISOString();
   const today = new Date(now);
   const formatted = today.toLocaleDateString("en-US", options);
@@ -25,7 +26,7 @@ export const GoalsByDate: React.FC<GoalsByDateProps> = ({ date, goals, isOwner }
 
       <CompletionRate goals={goals} />
       </Box>
-      <Goals isOwner={isOwner} goals={goals} />
+      <Goals isDemo={isDemo} isOwner={isOwner} goals={goals} />
     </Box>
   );
 };

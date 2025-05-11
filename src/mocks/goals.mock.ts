@@ -15,7 +15,7 @@ export const mockGoals = [
   },
    {
     created_at: "2025-05-09 12:38:26.034433+00",
-    description: "Add your link, todaysgoal.com/bob to your bio",
+    description: "Add your link, todaysgoal.com/you to your bio",
     is_done: false,
     id: 35,
     user_id: "",

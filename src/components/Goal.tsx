@@ -5,17 +5,17 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
-import { MoreVert } from "@mui/icons-material";
-export const Goal: React.FC<IAddedGoal & { isOwner?: boolean }> = ({
+export const Goal: React.FC<IAddedGoal & { isOwner?: boolean; isDemo?: boolean; }> = ({
   description,
   is_done,
   id,
   isOwner,
+  isDemo, 
 }) => {
   const [open, setOpen] = React.useState(false);
 
   const onClick = () => {
-    if (!isOwner) {
+    if (!isOwner  && !isDemo) {
       return;
     }
     setOpen(true);
@@ -33,7 +33,7 @@ export const Goal: React.FC<IAddedGoal & { isOwner?: boolean }> = ({
   };
   return (
     <>
-      <Card  onClick={onClick} sx={{ width: "100%", mb: 1}}>
+      <Card  onClick={onClick} sx={{ width: "100%", mb: 1, pr:1}}>
         <Box
           sx={{
             p: 1,
@@ -52,14 +52,11 @@ export const Goal: React.FC<IAddedGoal & { isOwner?: boolean }> = ({
             </IconButton>
           )}
           <Typography sx={{ml:1}} color={is_done ? 'textSecondary': 'textPrimary'}>{description}</Typography>
-          <Box sx={{ml:'auto'}}>
-
-            <MoreVert color='disabled' fontSize="small"/> 
-         
-          </Box>
+      
         </Box>
       </Card>
       <EditGoal
+      isDemo={isDemo}
         isDone={is_done}
         open={open}
         onClose={onClose}
