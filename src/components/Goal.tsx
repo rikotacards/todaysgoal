@@ -51,6 +51,7 @@ export const Goal: React.FC<
             sx={{
               ml: 1,
             }}
+            fontWeight={500}
             color={is_done ? "textSecondary" : "textPrimary"}
           >
             {description}
