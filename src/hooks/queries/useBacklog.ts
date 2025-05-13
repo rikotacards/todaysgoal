@@ -8,16 +8,13 @@ export interface FetchEntriesFilters {
   user_id?: string | null;
 }
 
-const fetchGoals = async (user_id: string, is_backlog?: boolean): Promise<IAddedGoal[]> => {
+const fetchBacklog = async (user_id: string): Promise<IAddedGoal[]> => {
   let q = supabase
-    .from("goals")
+    .from("backlog")
     .select("*")
     .order("created_at", { ascending: false }); // optional ordering
   if (user_id) {
     q = q.eq("user_id", user_id);
-  }
-  if(is_backlog !== undefined){
-    q = q.eq('is_backlog', is_backlog)
   }
   // if(!args?.userId){
   //   return []
@@ -27,10 +24,10 @@ const fetchGoals = async (user_id: string, is_backlog?: boolean): Promise<IAdded
   return data || [];
 };
 
-export const useGoals = (user_id: string, is_backlog?: boolean) => {
+export const useBacklog = (user_id: string) => {
   return useQuery<IAddedGoal[], Error>({
-    queryKey: ["goals", user_id, is_backlog],
-    queryFn: () => fetchGoals(user_id, is_backlog),
+    queryKey: ["backlog", user_id],
+    queryFn: () => fetchBacklog(user_id),
     // enabled: !!data
   });
 };

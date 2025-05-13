@@ -9,19 +9,25 @@ type UpdatePayload = {
   id: number;
   description?: string;
   is_done?: boolean;
+  is_backlog?: boolean;
+  created_at?: string;
 };
 
 const updateGoal = async ({
   id,
   description,
-  is_done
+  is_done,
+  is_backlog,
+  created_at,
 
 }: UpdatePayload) => {
   const { data, error } = await supabase
     .from("goals")
     .update({
       description,
-      is_done
+      is_done,
+      is_backlog,
+      created_at
     })
     .eq("id", id)
     .select();

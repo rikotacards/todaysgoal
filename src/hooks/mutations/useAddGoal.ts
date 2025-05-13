@@ -10,6 +10,7 @@ import type { IGoal } from "../../types";
   type NewActiveEntry = {
     description: string;
     user_id: string;
+    is_backlog?: boolean;
   };
   
 
@@ -22,7 +23,8 @@ import type { IGoal } from "../../types";
       .insert({
         user_id: goal.user_id,
         description: goal.description,
-        is_done: false
+        is_done: false,
+        is_backlog: goal.is_backlog
       })
       .select();
   

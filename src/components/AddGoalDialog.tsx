@@ -17,10 +17,12 @@ import { useAuthContext } from "../contexts/AuthContext";
 interface AddGoalDialogProps {
   open: boolean;
   onClose: () => void;
+  isBacklog?: boolean;
 }
 export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
   open,
   onClose,
+  isBacklog
 }) => {
   const isSmall = useIsSmall();
   const a = useAuthContext();
@@ -37,6 +39,7 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
       .mutateAsync({
         description: desc,
         user_id: a.data?.user.id || "",
+        is_backlog: isBacklog
       })
       .then(() => {
         onClose();
@@ -61,7 +64,7 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
         onClose={onClose}
       >
         <Box sx={{display: 'flex', flexDirection: 'column'}}>
-          <Toolbar><Typography fontWeight={'bold'}>Add goal</Typography>
+          <Toolbar><Typography fontWeight={'bold'}>{isBacklog ? 'Add goal for later' : 'Add goal'}</Typography>
           <Box sx={{ml:'auto'}}>
             <IconButton onClick={onClose}><Close/></IconButton>
           </Box>
@@ -70,7 +73,7 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
           <Typography color='textSecondary' variant="caption" sx={{mb:1}}>Be descriptive and intentional</Typography>
           <TextField placeholder="What will you achieve today?" value={desc} onChange={onChange} />
           <Button sx={{mt:1}} variant="contained" loading={add.isPending} onClick={onSave}>
-            Save
+            {isBacklog ? 'Add to backlog' : 'Add'}
           </Button>
           </Box>
         </Box>
@@ -81,20 +84,20 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
     <Dialog open={open} onClose={onClose}>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Toolbar>
-          <Typography fontWeight={"bold"}>Add Goal</Typography>
+          <Typography fontWeight={"bold"}>{isBacklog ? 'Add goal for later': 'Add goal'}</Typography>
           <IconButton size="small" onClick={onClose} sx={{ ml: "auto" }}>
             <Close />
           </IconButton>
         </Toolbar>
         <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
           <Box>
-            <Typography sx={{ mb: 1 }}>
+            <Typography variant='body2' sx={{ mb: 1 }}>
               Try to be descriptive and intentional.
             </Typography>
           </Box>
-          <Box>
+          {!isBacklog && <Box>
             <Typography sx={{ mb: 1 }}>Today, I will:</Typography>
-          </Box>
+          </Box>}
           <TextField
             multiline
             placeholder="Finish that thing!"
@@ -102,12 +105,12 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
             onChange={onChange}
           />
           <Button
-            sx={{ mt: 1, mb: 1 }}
+            sx={{ mt: 1, mb: 1, textTransform: 'capitalize'}}
             loading={add.isPending}
             onClick={onSave}
             variant="contained"
           >
-            Add Goal
+            {isBacklog ? 'Add to backlog' : 'Add Goal'}
           </Button>
           <Button>Cancel</Button>
         </DialogContent>

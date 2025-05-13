@@ -23,7 +23,7 @@ interface ProfileLoggedInProps {
 }
 export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const user = useGetUserName(userId);
-  const goals = useGoals(userId);
+  const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
 
   console.log(goals.data);

@@ -19,10 +19,15 @@ const routes = [
     name: "home",
     path: "/",
   },
+  {
+    name: "Backlog",
+    path: "/backlog",
+  },
 ];
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const [value, setValue] = React.useState<string>("/");
   const a = useAuthContext();
+
   const isLoggedIn = a.data?.user;
   const s = useSignInWithGoogle();
   const l = useLocation();
@@ -35,10 +40,10 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   }, [pathname]);
   const onClick = () => {
     if (isInstagram()) {
-          window.open("https://todaysgoal.com", "_blank");
-        } else {
-          s.mutateAsync();
-        }
+      window.open("https://todaysgoal.com", "_blank");
+    } else {
+      s.mutateAsync();
+    }
   };
   const nav = useNavigate();
   return (
@@ -52,11 +57,8 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         }}
         elevation={0}
       >
-        <Box sx={{display: 'flex', justifyContent: 'center'}}>
-          <Tabs
-            value={value}
-            onChange={(_, v) => setValue(v)}
-          >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Tabs value={value} onChange={(_, v) => setValue(v)}>
             {displayedRoutes.map((t) => (
               <Tab
                 sx={{ textTransform: "capitalize" }}
@@ -73,7 +75,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
             </Button>
           )}
         </Box>
-      <Divider sx={{width:'100%'}}/>
+        <Divider sx={{ width: "100%" }} />
       </AppBar>
       <Toolbar />
       <Box sx={{ maxWidth: "600px", ml: "auto", mr: "auto" }}>{children}</Box>

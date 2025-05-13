@@ -8,6 +8,7 @@ import { Profile } from "./pages/Profile";
 import { AuthProvider } from "./providers/AuthProvider";
 import { PublicProfile } from "./pages/PublicProfile";
 import { Settings } from "./pages/Settings";
+import { Backlog } from "./pages/Backlog";
 
 function App() {
   const queryClient = new QueryClient();
@@ -23,6 +24,8 @@ function App() {
               <Layout>
                 <Routes>
                   <Route element={<Profile />} path="/" />
+                  <Route path="/backlog" element={<Backlog />} />
+
                   <Route path="/:username" element={<PublicProfile />} />
                   <Route path="/settings" element={<Settings />} />
                 </Routes>
