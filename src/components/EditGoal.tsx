@@ -11,7 +11,7 @@ import {
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import { ChevronLeft, Close } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import { useDeleteGoal } from "../hooks/mutations/useDeleteGoal";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 interface EditGoalProps {

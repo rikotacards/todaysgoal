@@ -29,7 +29,7 @@ export const Goal: React.FC<
   };
   return (
     <>
-      <Card onClick={onClick} sx={{ width: "100%", mb: 1, pr: 1 }}>
+      <Card  onClick={onClick} sx={{borderColor: t => t.palette.divider,borderStyle: 'solid',  borderWidth: '0.5px',  width: "100%", mb: 1, pr: 1 }}>
         <Box
           sx={{
             p: 1,
@@ -51,7 +51,7 @@ export const Goal: React.FC<
             sx={{
               ml: 1,
             }}
-            fontWeight={500}
+            fontWeight={is_done? 400 : 500}
             color={is_done ? "textSecondary" : "textPrimary"}
           >
             {description}

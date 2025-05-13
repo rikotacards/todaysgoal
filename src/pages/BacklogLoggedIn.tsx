@@ -17,7 +17,6 @@ interface BacklogLoggedIn {
   userId: string;
 }
 export const BacklogLoggedIn: React.FC<BacklogLoggedIn> = ({userId}) => {
-  const user = useGetUserName(userId);
   const goals = useGoals(userId, true);
 
   const [isAddOpen, setIsAdd] = React.useState(false);
@@ -29,10 +28,11 @@ export const BacklogLoggedIn: React.FC<BacklogLoggedIn> = ({userId}) => {
     setIsAdd(false);
   };
 
- 
-  if (user.isPending) {
-    return <CircularProgress />;
+  if(goals.isLoading){
+    return <Box sx={{display: 'flex', width: '100%', justifyContent: "center"}}><CircularProgress/></Box>
   }
+ 
+  
   return (
     <>
       <Box sx={{ m: 2 }}>
