@@ -25,7 +25,7 @@ export const PublicProfile: React.FC = () => {
     }
   };
   const userId = useGetUserId(username || "");
-  const goals = useGoals(userId?.data?.user_id || "");
+  const goals = useGoals(userId?.data?.user_id || "", false);
   const goalsByDate = groupGoalsByDate(goals.data);
   if (goals.isLoading) {
     return (
