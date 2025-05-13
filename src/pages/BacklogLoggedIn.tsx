@@ -6,7 +6,6 @@ import {
 
   Typography,
 } from "@mui/material";
-import { useGetUserName } from "../hooks/queries/useGetUsername";
 import { Add } from "@mui/icons-material";
 import { AddGoalDialog } from "../components/AddGoalDialog";
 
