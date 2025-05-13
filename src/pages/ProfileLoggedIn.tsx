@@ -100,9 +100,9 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
       </Box>
       <Box>
         <Button
-          sx={{ mb: 1, mt: 1 }}
+          sx={{ mb: 1, mt: 1, fontWeight:'bold' }}
           startIcon={<Add />}
-          variant="contained"
+          variant="outlined"
           onClick={onAdd}
           fullWidth
         >

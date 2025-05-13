@@ -107,7 +107,7 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
             onClick={onSave}
             variant="contained"
           >
-            Save
+            Add Goal
           </Button>
           <Button>Cancel</Button>
         </DialogContent>

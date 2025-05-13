@@ -5,17 +5,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
-export const Goal: React.FC<IAddedGoal & { isOwner?: boolean; isDemo?: boolean; }> = ({
-  description,
-  is_done,
-  id,
-  isOwner,
-  isDemo, 
-}) => {
+export const Goal: React.FC<
+  IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
+> = ({ description, is_done, id, isOwner, isDemo }) => {
   const [open, setOpen] = React.useState(false);
 
   const onClick = () => {
-    if (!isOwner  && !isDemo) {
+    if (!isOwner && !isDemo) {
       return;
     }
     setOpen(true);
@@ -33,7 +29,7 @@ export const Goal: React.FC<IAddedGoal & { isOwner?: boolean; isDemo?: boolean; 
   };
   return (
     <>
-      <Card  onClick={onClick} sx={{ width: "100%", mb: 1, pr:1}}>
+      <Card onClick={onClick} sx={{ width: "100%", mb: 1, pr: 1 }}>
         <Box
           sx={{
             p: 1,
@@ -51,12 +47,18 @@ export const Goal: React.FC<IAddedGoal & { isOwner?: boolean; isDemo?: boolean; 
               <RadioButtonUncheckedIcon />
             </IconButton>
           )}
-          <Typography sx={{ml:1}} color={is_done ? 'textSecondary': 'textPrimary'}>{description}</Typography>
-      
+          <Typography
+            sx={{
+              ml: 1,
+            }}
+            color={is_done ? "textSecondary" : "textPrimary"}
+          >
+            {description}
+          </Typography>
         </Box>
       </Card>
       <EditGoal
-      isDemo={isDemo}
+        isDemo={isDemo}
         isDone={is_done}
         open={open}
         onClose={onClose}

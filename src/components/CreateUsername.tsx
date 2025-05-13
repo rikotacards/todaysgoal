@@ -62,7 +62,10 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
       e.target.value === "setting" ||
       e.target.value === "profile" ||
       e.target.value === 'home'
-    )
+    ){
+      setError(true);
+      return;
+    }
       setUsername(e.target.value.trim().toLocaleLowerCase());
   };
   const adornment = isLoading ? (
