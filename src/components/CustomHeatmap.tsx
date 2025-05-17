@@ -7,24 +7,18 @@ interface MyHeatmapProps {
   data: { date: string; count: number }[];
 }
 export const CustomHeatMap: React.FC<MyHeatmapProps> = ({ data }) => {
-  return (
+    const firstLoggedDate = new Date(data[data.length-1].date)
+    const startDate = `${firstLoggedDate.getFullYear()}-${firstLoggedDate.getMonth()}-${firstLoggedDate.getDate()}`
+    return (
     <CalendarHeatmap
-      startDate={new Date("2025-01-01")}
+      startDate={new Date(startDate)}
       endDate={new Date("2025-12-31")}
       values={data}
-      showWeekdayLabels
-      tooltipDataAttrs={value => {
-          return {
-            'data-tip': `${value.date.toISOString().slice(0, 10)} has count: ${
-              value.count
-            }`,
-          };
-        }}
       classForValue={(value) => {
         if (!value) {
           return "color-empty";
         }
-        return `color-scale-${value.count}`;
+        return `color-scale-${Math.floor(value.count/5) * 5}`;
       }}
     />
   );
