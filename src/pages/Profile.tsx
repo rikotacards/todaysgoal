@@ -8,8 +8,6 @@ import { groupGoalsByDate } from "../utils/groupGoalsByDate";
 import { GoalsByDate } from "../components/GoalsByDate";
 import { isInstagram } from "../utils/isInstagram";
 import { useSignInWithGoogle } from "../hooks/mutations/useSignInWithGoogle";
-import { transformForCal } from "../utils/transformForCal";
-import { CustomHeatMap } from "../components/CustomHeatmap";
 
 export const Profile: React.FC = () => {
   const a = useAuthContext();
@@ -20,7 +18,6 @@ export const Profile: React.FC = () => {
   };
 
   const goalsByDate = groupGoalsByDate(mockGoals);
-  const data = transformForCal(mockGoals)
   if (a.isPending) {
     
     return <Box sx={{display:'flex', width:'100%', justifyContent: 'center', alignItems: 'center'}}><CircularProgress /></Box>;
@@ -45,7 +42,6 @@ export const Profile: React.FC = () => {
             <Box></Box>
           </Box>
         </Box>
-        <CustomHeatMap data={data}/>
         {goalsByDate.map((g) => (
           <GoalsByDate isDemo date={g.date} goals={g.goals} />
         ))}

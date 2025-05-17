@@ -18,8 +18,6 @@ import { AddGoalDialog } from "../components/AddGoalDialog";
 import { useGoals } from "../hooks/queries/useGoals";
 import { groupGoalsByDate } from "../utils/groupGoalsByDate";
 import { GoalsByDate } from "../components/GoalsByDate";
-import { transformForCal } from "../utils/transformForCal";
-import { CustomHeatMap } from "../components/CustomHeatmap";
 interface ProfileLoggedInProps {
   userId: string;
 }
@@ -27,7 +25,6 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const user = useGetUserName(userId);
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
-  const data = transformForCal(goals.data)
   const [open, setOpen] = React.useState(false);
   const [isAddOpen, setIsAdd] = React.useState(false);
   const textToCopy = `http://todaysgoal.com/${user.data?.username}`;
@@ -100,7 +97,6 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         </Box>
       </Box>
       <Box>
-        {data.length && <CustomHeatMap data={data}/>}
         <Button
           sx={{ mb: 1, mt: 1, fontWeight:'bold' }}
           startIcon={<Add />}

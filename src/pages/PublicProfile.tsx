@@ -8,8 +8,6 @@ import { GoalsByDate } from "../components/GoalsByDate";
 import LinkIcon from "@mui/icons-material/Link";
 import { MarketingDrawer } from "../components/MarketingDrawer";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
-import { transformForCal } from "../utils/transformForCal";
-import { CustomHeatMap } from "../components/CustomHeatmap";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
   const textToCopy = `http://todaysgoal.com/${username}`;
@@ -28,7 +26,6 @@ export const PublicProfile: React.FC = () => {
   };
   const userId = useGetUserId(username || "");
   const goals = useGoals(userId?.data?.user_id || "", false);
-  const data = transformForCal(goals.data);
   const goalsByDate = groupGoalsByDate(goals.data);
   if (goals.isLoading) {
     return (
@@ -83,9 +80,6 @@ export const PublicProfile: React.FC = () => {
           <Typography variant="h4">{username}</Typography>
         </Box>
         <Box>
-          <CustomHeatMap
-            data={data.length ? data : [{ date: "2025-06-01", count: 0 }]}
-          />
           {goalsByDate.map((g) => (
             <GoalsByDate isOwner={false} goals={g.goals} date={g.date} />
           ))}
