@@ -37,6 +37,7 @@ export const EditGoal: React.FC<EditGoalProps> = ({
   const move = useEditGoal();
   const d = useDeleteGoal();
   const [desc, setDesc] = React.useState(description);
+  const canSave = desc !== description
   const moveToToday = () => {
     if (isDemo) {
       onClose();
@@ -115,6 +116,14 @@ export const EditGoal: React.FC<EditGoalProps> = ({
           sx={{ display: "flex", flexDirection: "column", p: 2, minWidth: 300 }}
         >
           <TextField multiline onChange={onChange} value={desc} />
+          <Button
+            variant={canSave ? "contained" : undefined}
+            sx={{display: canSave ? 'flex' : 'none', mt: 1, mb: 1 , textTransform: 'capitalize'}}
+            loading={update.isPending}
+            onClick={onUpdate}
+          >
+            Save
+          </Button>
           {is_backlog ? (
             <Button variant="outlined" sx={{mt:1, mb:1, textTransform: 'capitalize'}} onClick={moveToToday}>Move to today</Button>
           ) : (
@@ -134,17 +143,6 @@ export const EditGoal: React.FC<EditGoalProps> = ({
           {!is_backlog && (
             <Button startIcon={<AccessTimeIcon/>} sx={{textTransform: 'capitalize', mt:1, mb:1}} onClick={moveToBacklog}>Move to backlog</Button>
           )}
-          <Button
-            variant={desc !== description ? "contained" : undefined}
-            sx={{ mt: 1, mb: 1 , textTransform: 'capitalize'}}
-            loading={update.isPending}
-            onClick={onUpdate}
-          >
-            Save
-          </Button>
-          <Button sx={{ mb: 1 , textTransform: 'capitalize'}} onClick={onClose}>
-            Cancel
-          </Button>
           <Button sx={{textTransform: 'capitalize'}} loading={d.isPending} color="error" onClick={onDelete}>
             Delete
           </Button>
