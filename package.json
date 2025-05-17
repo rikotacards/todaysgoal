@@ -19,12 +19,15 @@
     "@vercel/analytics": "^1.5.0",
     "notistack": "^3.0.2",
     "react": "^19.1.0",
+    "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.0"
+    "react-router-dom": "^7.6.0",
+    "react-tooltip": "^5.28.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
+    "@types/react-calendar-heatmap": "^1.9.0",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.25.0",
