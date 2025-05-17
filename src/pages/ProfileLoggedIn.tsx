@@ -28,7 +28,6 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
   const data = transformForCal(goals.data)
-  console.log('d', data)
   const [open, setOpen] = React.useState(false);
   const [isAddOpen, setIsAdd] = React.useState(false);
   const textToCopy = `http://todaysgoal.com/${user.data?.username}`;

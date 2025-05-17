@@ -1,3 +1,4 @@
+
 export const mockGoals = [
      {
     created_at: new Date().toISOString(),
@@ -21,6 +22,13 @@ export const mockGoals = [
     user_id: "",
   },
   {
+    created_at: new Date().toISOString(),
+    description: "Finish marketing campaign on Instagram",
+    is_done: false,
+    id: 2,
+    user_id: "",
+  },
+   {
     created_at: new Date().toISOString(),
     description: "Finish marketing campaign on Instagram",
     is_done: false,
