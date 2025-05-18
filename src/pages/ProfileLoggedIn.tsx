@@ -9,15 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
+import ActivityCalendar from "react-activity-calendar";
 import { CreateUsername } from "../components/CreateUsername";
 import { useGetUserName } from "../hooks/queries/useGetUsername";
 import { Edit } from "@mui/icons-material";
 import { Add } from "@mui/icons-material";
 import { AddGoalDialog } from "../components/AddGoalDialog";
+import { Tooltip as MuiTooltip } from "@mui/material";
 
 import { useGoals } from "../hooks/queries/useGoals";
 import { groupGoalsByDate } from "../utils/groupGoalsByDate";
 import { GoalsByDate } from "../components/GoalsByDate";
+import { transformForCal } from "../utils/transformForCal";
+import { green, red, yellow } from "@mui/material/colors";
 interface ProfileLoggedInProps {
   userId: string;
 }
@@ -25,6 +29,8 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const user = useGetUserName(userId);
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
+  console.log(transformForCal(goals.data));
+  const data = transformForCal(goals.data);
   const [open, setOpen] = React.useState(false);
   const [isAddOpen, setIsAdd] = React.useState(false);
   const textToCopy = `http://todaysgoal.com/${user.data?.username}`;
@@ -63,7 +69,6 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
           {!user.data && <CreateUsername />}
           {user.data?.username && (
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-             
               <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <Typography fontWeight={"bold"} variant="h4">
                   Today's Goals For
@@ -97,8 +102,35 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         </Box>
       </Box>
       <Box>
+        <ActivityCalendar
+          theme={{
+            dark: [
+              red['A400'],
+              red['200'],
+              yellow[300],
+              green[300],
+              green['A400'],
+              green['A700'],
+            ],
+          }}
+          showWeekdayLabels
+          renderBlock={(block, activity) => (
+            <MuiTooltip
+              title={`${activity.count} activities on ${activity.date} - ${activity?.percentComplete}% Complete`}
+            >
+              {block}
+            </MuiTooltip>
+          )}
+          renderColorLegend={(block, level) => (
+            <MuiTooltip title={`Level: ${level}`}>{block}</MuiTooltip>
+          )}
+          maxLevel={5}
+          data={
+            data.length ? data : [{ date: "2025-06-01", count: 0, level: 4 }]
+          }
+        />
         <Button
-          sx={{ mb: 1, mt: 1, fontWeight:'bold' }}
+          sx={{ mb: 1, mt: 1, fontWeight: "bold" }}
           startIcon={<Add />}
           variant="outlined"
           onClick={onAdd}
