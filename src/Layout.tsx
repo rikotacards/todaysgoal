@@ -24,6 +24,7 @@ const routes = [
     path: "/backlog",
   },
 ];
+
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const [value, setValue] = React.useState<string>("/");
   const a = useAuthContext();
