@@ -6,6 +6,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
 import { CustomChip } from "./CustomChip";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 export const Goal: React.FC<
   IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
 > = ({ description, is_done, id, isOwner, isDemo, created_at }) => {
@@ -85,7 +86,7 @@ export const Goal: React.FC<
               onClick={onToggleComplete}
               size="small"
             >
-              <RadioButtonUncheckedIcon />
+             {isOverdue ? <HighlightOffIcon color='error'/> : <RadioButtonUncheckedIcon />}
             </IconButton>
           )}
           <Typography
