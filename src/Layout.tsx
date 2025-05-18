@@ -13,7 +13,6 @@ import { useSignInWithGoogle } from "./hooks/mutations/useSignInWithGoogle";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
 import { isInstagram } from "./utils/isInstagram";
-import { useGetUserId } from "./hooks/queries/useGetUserId";
 import { useGetUserName } from "./hooks/queries/useGetUsername";
 
 const routes = [

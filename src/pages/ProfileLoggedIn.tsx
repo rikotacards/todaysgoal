@@ -25,7 +25,6 @@ interface ProfileLoggedInProps {
 }
 export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const username = useGetUserName(userId);
-  console.log('check', username.data)
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
   const data = transformForCal(goals.data);
