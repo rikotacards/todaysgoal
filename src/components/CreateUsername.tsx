@@ -14,6 +14,7 @@ import { ChevronRight, Error, Info } from "@mui/icons-material";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useAddUsername } from "../hooks/mutations/useAddUsername";
 import { useEditUsername } from "../hooks/mutations/useEditUsername";
+import { reservedUsernames } from "../config/reservedUsernames";
 interface CreateUsernameProps {
   existingUsername?: string;
   onSubmit?: () => void;
@@ -56,16 +57,11 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(false);
-    if (
-      e.target.value === "settings" ||
-      e.target.value === "setting" ||
-      e.target.value === "profile" ||
-      e.target.value === 'home'
-    ){
+    if (reservedUsernames.includes(e.target.value)) {
       setError(true);
       return;
     }
-      setUsername(e.target.value.trim().toLocaleLowerCase());
+    setUsername(e.target.value.trim().toLocaleLowerCase());
   };
   const adornment = isLoading ? (
     <Box>
