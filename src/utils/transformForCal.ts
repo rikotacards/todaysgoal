@@ -1,10 +1,12 @@
 import type { IAddedGoal } from "../types";
+import { createDateMap } from "./createDateRange";
 
 export const transformForCal = (goals?: IAddedGoal[]) => {
   if (!goals) {
     return [];
   }
-  const map = new Map<string, IAddedGoal[]>();
+  const first = new Date(goals[0].created_at).toLocaleDateString("en-CA")
+  const map = createDateMap(first, "2025-12-31")
   goals.forEach((g) => {
     const date = new Date(g.created_at).toLocaleDateString("en-CA");
     if (map.get(date) !== undefined) {

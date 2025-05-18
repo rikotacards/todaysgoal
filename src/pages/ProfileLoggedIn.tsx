@@ -9,19 +9,17 @@ import {
   Typography,
 } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
-import ActivityCalendar from "react-activity-calendar";
 import { CreateUsername } from "../components/CreateUsername";
 import { useGetUserName } from "../hooks/queries/useGetUsername";
 import { Edit } from "@mui/icons-material";
 import { Add } from "@mui/icons-material";
 import { AddGoalDialog } from "../components/AddGoalDialog";
-import { Tooltip as MuiTooltip } from "@mui/material";
 
 import { useGoals } from "../hooks/queries/useGoals";
 import { groupGoalsByDate } from "../utils/groupGoalsByDate";
 import { GoalsByDate } from "../components/GoalsByDate";
 import { transformForCal } from "../utils/transformForCal";
-import { green, red, yellow } from "@mui/material/colors";
+import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
 interface ProfileLoggedInProps {
   userId: string;
 }
@@ -29,7 +27,6 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const user = useGetUserName(userId);
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
-  console.log(transformForCal(goals.data));
   const data = transformForCal(goals.data);
   const [open, setOpen] = React.useState(false);
   const [isAddOpen, setIsAdd] = React.useState(false);
@@ -102,32 +99,13 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         </Box>
       </Box>
       <Box>
-        <ActivityCalendar
-          theme={{
-            dark: [
-              red['A400'],
-              red['200'],
-              yellow[300],
-              green[300],
-              green['A400'],
-              green['A700'],
-            ],
-          }}
-          renderBlock={(block, activity) => (
-            <MuiTooltip
-              title={`${activity.count} activities on ${activity.date}`}
-            >
-              {block}
-            </MuiTooltip>
-          )}
-          renderColorLegend={(block, level) => (
-            <MuiTooltip title={`Level: ${level}`}>{block}</MuiTooltip>
-          )}
-          maxLevel={5}
-          data={
-            data.length ? data : [{ date: "2025-06-01", count: 0, level: 4 }]
-          }
-        />
+        <Box sx={{mt:1}}>
+          <CustomActivityCalendar
+            data={
+              data.length ? data : [{ count: 0, level: 5, date: "2025-05-18" }]
+            }
+          />
+        </Box>
         <Button
           sx={{ mb: 1, mt: 1, fontWeight: "bold" }}
           startIcon={<Add />}

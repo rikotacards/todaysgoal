@@ -51,7 +51,6 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
         });
     } else {
       setError(true);
-      console.log("DD", data);
     }
     setLoading(false);
   };
