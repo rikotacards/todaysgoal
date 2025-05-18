@@ -13,6 +13,8 @@ import { useSignInWithGoogle } from "./hooks/mutations/useSignInWithGoogle";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
 import { isInstagram } from "./utils/isInstagram";
+import { useGetUserId } from "./hooks/queries/useGetUserId";
+import { useGetUserName } from "./hooks/queries/useGetUsername";
 
 const routes = [
   {
@@ -25,17 +27,23 @@ const routes = [
   },
 ];
 
+
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const [value, setValue] = React.useState<string>("/");
   const a = useAuthContext();
-
+  const username = useGetUserName(a.data?.user.id || "");
+  const hasUsername = username.data?.username
   const isLoggedIn = a.data?.user;
   const s = useSignInWithGoogle();
   const l = useLocation();
+  
   const displayedRoutes = isLoggedIn
     ? [...routes, { name: "Settings", path: "/settings" }]
     : routes;
   const { pathname } = l;
+  if(hasUsername){
+    displayedRoutes.splice(2,0, {name: 'profile', path:`/${username.data?.username}`})
+  }
   React.useEffect(() => {
     setValue(pathname);
   }, [pathname]);

@@ -1,6 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useGetUserId } from "../hooks/queries/useGetUserId";
 import { useGoals } from "../hooks/queries/useGoals";
 import { groupGoalsByDate } from "../utils/groupGoalsByDate";
@@ -10,8 +17,10 @@ import { MarketingDrawer } from "../components/MarketingDrawer";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
 import { transformForCal } from "../utils/transformForCal";
+import { useAuth } from "../hooks/queries/useAuth";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
+  const a = useAuth();
   const textToCopy = `http://todaysgoal.com/${username}`;
   const [isCopied, setIsCopied] = React.useState(false);
 
@@ -66,6 +75,32 @@ export const PublicProfile: React.FC = () => {
     <>
       <Box sx={{ m: 2 }}>
         <Box sx={{ mb: 2 }}>
+          {a.data?.user.id && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                p: 1,
+                mb: 1,
+              }}
+              variant="outlined"
+              component={Card}
+            >
+              <Typography color="textSecondary" variant="caption">
+                This how others see your profile
+              </Typography>
+              <Box sx={{ ml: "auto" }}>
+                <Button
+                  onClick={handleCopy}
+                  sx={{ textTransform: "capitalize", ml: "auto" }}
+                  size="small"
+                >
+                  {isCopied ? "Copied" : "Copy Url"}
+                </Button>
+              </Box>
+            </Box>
+          )}
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Typography fontWeight={"bold"} variant="h4">
               Today's Goals for
@@ -82,8 +117,12 @@ export const PublicProfile: React.FC = () => {
           </Box>
           <Typography variant="h4">{username}</Typography>
         </Box>
-        <Box sx={{mb:2}}>
-          <CustomActivityCalendar data={data.length ? data : [{date:"2025-05-18", count:0, level: 0}]}/>
+        <Box sx={{ mb: 2 }}>
+          <CustomActivityCalendar
+            data={
+              data.length ? data : [{ date: "2025-05-18", count: 0, level: 0 }]
+            }
+          />
         </Box>
         <Box>
           {goalsByDate.map((g) => (
@@ -91,7 +130,7 @@ export const PublicProfile: React.FC = () => {
           ))}
         </Box>
       </Box>
-      <MarketingDrawer />
+      {!a.data?.user && <MarketingDrawer />}
     </>
   );
 };
