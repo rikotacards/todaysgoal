@@ -24,13 +24,14 @@ interface ProfileLoggedInProps {
   userId: string;
 }
 export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
-  const user = useGetUserName(userId);
+  const username = useGetUserName(userId);
+  console.log('check', username.data)
   const goals = useGoals(userId, false);
   const goalsByDate = groupGoalsByDate(goals.data);
   const data = transformForCal(goals.data);
   const [open, setOpen] = React.useState(false);
   const [isAddOpen, setIsAdd] = React.useState(false);
-  const textToCopy = `http://todaysgoal.com/${user.data?.username}`;
+  const textToCopy = `http://todaysgoal.com/${username.data?.username}`;
   const [isCopied, setIsCopied] = React.useState(false);
 
   const handleCopy = async () => {
@@ -56,15 +57,19 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const onClose = () => {
     setOpen(false);
   };
-  if (user.isPending) {
-    return <CircularProgress />;
+  if (username.isPending) {
+    return (
+      <Box sx={{ width: "100%", justifyContent: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
   return (
     <>
       <Box sx={{ p: 0 }}>
         <Box>
-          {!user.data && <CreateUsername />}
-          {user.data?.username && (
+          {!username.data?.username && <CreateUsername />}
+          {username.data?.username && (
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <Typography fontWeight={"bold"} variant="h4">
@@ -87,7 +92,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
                   flexDirection: "row",
                 }}
               >
-                <Typography variant="h4">{user.data.username}</Typography>
+                <Typography variant="h4">{username.data.username}</Typography>
                 <Box>
                   <IconButton sx={{ ml: 1 }} size="small" onClick={onClick}>
                     <Edit fontSize="small" />
@@ -99,7 +104,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         </Box>
       </Box>
       <Box>
-        <Box sx={{mt:1}}>
+        <Box sx={{ mt: 1 }}>
           <CustomActivityCalendar
             data={
               data.length ? data : [{ count: 0, level: 0, date: "2025-05-18" }]
@@ -123,7 +128,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         <DialogContent>
           <CreateUsername
             onSubmit={onClose}
-            existingUsername={user.data?.username}
+            existingUsername={username.data?.username}
           />
         </DialogContent>
       </Dialog>

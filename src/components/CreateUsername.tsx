@@ -19,30 +19,38 @@ interface CreateUsernameProps {
   existingUsername?: string;
   onSubmit?: () => void;
 }
+
+const isValidUsername = (username: string) => /^(?!.*\.\.)[a-zA-Z0-9._]+$/.test(username);
 export const CreateUsername: React.FC<CreateUsernameProps> = ({
   onSubmit,
   existingUsername,
 }) => {
-  const [username, setUsername] = React.useState(existingUsername);
+  const [username, setUsername] = React.useState(existingUsername || "");
   const [isLoading, setLoading] = React.useState(false);
   const [hasError, setError] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState("");
   const { getUsername } = useUsernames();
   const a = useAuthContext();
   const add = useAddUsername();
   const update = useEditUsername();
   const onCreate = async () => {
-    if (!username) {
-      return;
-    }
     setLoading(true);
     setError(false);
+    if (!username) {
+      setError(true);
+      setErrorMsg("You must enter a username");
+      return;
+    }
+    // check if there is existing username
     const data = await getUsername(username);
+    console.log("dddd", data);
     if (!data) {
+      // username does not exist
       setError(false);
       if (!a.data?.user.id) {
         return;
       }
-      (existingUsername ? update : add)
+      (existingUsername?.length ? update : add)
         .mutateAsync({
           user_id: a.data.user.id,
           username,
@@ -51,14 +59,25 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
           onSubmit?.();
         });
     } else {
+      // username exists
       setError(true);
+      setErrorMsg("Username already exists");
     }
     setLoading(false);
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(false);
+
+    if(!isValidUsername(e.target.value)){
+      setError(true)
+      setErrorMsg('Invalid username')
+    }
+    if(e.target.value === ""){
+      setError(false)
+    }
     if (reservedUsernames.includes(e.target.value)) {
       setError(true);
+      setErrorMsg("This is a reserved word");
       return;
     }
     setUsername(e.target.value.trim().toLocaleLowerCase());
@@ -106,6 +125,7 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
         endAdornment={
           <InputAdornment position="end">{adornment}</InputAdornment>
         }
+        placeholder="username"
         error={hasError}
         value={username}
         onChange={onChange}
@@ -113,7 +133,7 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
 
       {hasError && (
         <Typography color="error" variant="caption">
-          Username already exists
+          {errorMsg}
         </Typography>
       )}
       {existingUsername && (

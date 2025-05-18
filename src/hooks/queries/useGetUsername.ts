@@ -30,8 +30,8 @@ const fetchGoals = async (user_id:string): Promise<Row> => {
 export const useGetUserName = (user_id:string) => {
 
   return useQuery<Row, Error>({
-    queryKey: ["usernames"],
+    queryKey: ["usernames", user_id],
     queryFn:  () => fetchGoals(user_id),
-    // enabled: !!data
+    enabled: !!user_id
   });
 };
