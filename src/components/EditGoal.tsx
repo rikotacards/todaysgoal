@@ -13,7 +13,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Close } from "@mui/icons-material";
 import { useDeleteGoal } from "../hooks/mutations/useDeleteGoal";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 interface EditGoalProps {
   open: boolean;
   onClose: () => void;
@@ -141,7 +140,7 @@ export const EditGoal: React.FC<EditGoalProps> = ({
             </Button>
           )}
           {!is_backlog && (
-            <Button startIcon={<AccessTimeIcon/>} sx={{textTransform: 'capitalize', mt:1, mb:1}} onClick={moveToBacklog}>Move to backlog</Button>
+            <Button sx={{textTransform: 'capitalize', mt:1, mb:1}} onClick={moveToBacklog}>Move to backlog</Button>
           )}
           <Button sx={{textTransform: 'capitalize'}} loading={d.isPending} color="error" onClick={onDelete}>
             Delete
