@@ -32,7 +32,7 @@ export const mockGoals = [
     created_at: new Date().toISOString(),
     description: "Finish marketing campaign on Instagram",
     is_done: false,
-    id: 2,
+    id: 232,
     user_id: "",
   },
 ];

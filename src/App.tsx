@@ -19,7 +19,7 @@ function App() {
         <AuthProvider>
           <ThemeProvider theme={darkTheme}>
             <SnackbarProvider
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             >
               <Layout>
                 <Routes>

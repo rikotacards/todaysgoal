@@ -55,6 +55,7 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
           username,
         })
         .then(() => {
+          setLoading(false);
           onSubmit?.();
         });
     } else {
