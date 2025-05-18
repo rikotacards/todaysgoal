@@ -93,7 +93,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
               >
                 <Typography variant="h4">{username.data.username}</Typography>
                 <Box>
-                  <IconButton sx={{ ml: 1 }} size="small" onClick={onClick}>
+                  <IconButton color='primary' sx={{ ml: 1 }} size="small" onClick={onClick}>
                     <Edit fontSize="small" />
                   </IconButton>
                 </Box>

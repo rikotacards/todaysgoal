@@ -9,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Close } from "@mui/icons-material";
 import { useDeleteGoal } from "../hooks/mutations/useDeleteGoal";
 interface EditGoalProps {
@@ -127,9 +125,6 @@ export const EditGoal: React.FC<EditGoalProps> = ({
             <Button variant="outlined" sx={{mt:1, mb:1, textTransform: 'capitalize'}} onClick={moveToToday}>Move to today</Button>
           ) : (
             <Button
-              startIcon={
-                isDone ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />
-              }
               loading={updateDone.isPending}
               onClick={onDone}
               variant="outlined"

@@ -2,7 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
-  Button,
   Card,
   CircularProgress,
   IconButton,
@@ -18,6 +17,7 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
 import { transformForCal } from "../utils/transformForCal";
 import { useAuth } from "../hooks/queries/useAuth";
+import { Info } from "@mui/icons-material";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
   const a = useAuth();
@@ -75,7 +75,7 @@ export const PublicProfile: React.FC = () => {
     <>
       <Box sx={{ m: 2 }}>
         <Box sx={{ mb: 2 }}>
-          {a.data?.user.id && (
+          {a.data?.user.id === userId.data.user_id && (
             <Box
               sx={{
                 display: "flex",
@@ -87,17 +87,39 @@ export const PublicProfile: React.FC = () => {
               variant="outlined"
               component={Card}
             >
-              <Typography color="textSecondary" variant="caption">
-                This how others see your profile
-              </Typography>
-              <Box sx={{ ml: "auto" }}>
-                <Button
-                  onClick={handleCopy}
-                  sx={{ textTransform: "capitalize", ml: "auto" }}
-                  size="small"
+              <Info />
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  sx={{ ml: 1 }}
+                  color="textSecondary"
+                  variant="caption"
                 >
-                  {isCopied ? "Copied" : "Copy Url"}
-                </Button>
+                  This how others see your profile. You won't be able to edit
+                  your goals here.
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="caption" sx={{ ml: 1 }}>
+                    Share your url
+                  </Typography>
+                  <Box
+                    onClick={handleCopy}
+                    sx={{
+                      borderRadius: 2,
+                      ml: 1,
+                      display: "flex",
+                      pl: 1,
+                      pr: 1,
+                      pt: 0.5,
+                      pb: 0.5,
+                      border: (t) => `1px solid ${t.palette.divider}`,
+                    }}
+                  >
+                    <Typography color="primary" variant="caption">
+                      todaysgoal.com/{username}
+                    </Typography>
+                    <Typography variant='caption' color='success' sx={{ml:1}}>{isCopied ? "Url copied!" : null}</Typography>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           )}

@@ -13,7 +13,7 @@ export function useSignOut() {
     },
     onSuccess: () => {
       queryClient.resetQueries({ queryKey: ["authUser"] });
-
+      queryClient.invalidateQueries({queryKey: ['authUser']})
       navigate("/"); // or navigate('/') if you want home page
     },
     onError: (error) => {
