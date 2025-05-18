@@ -113,10 +113,9 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
               green['A700'],
             ],
           }}
-          showWeekdayLabels
           renderBlock={(block, activity) => (
             <MuiTooltip
-              title={`${activity.count} activities on ${activity.date} - ${activity?.percentComplete}% Complete`}
+              title={`${activity.count} activities on ${activity.date}`}
             >
               {block}
             </MuiTooltip>
