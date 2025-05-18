@@ -8,6 +8,8 @@ import { GoalsByDate } from "../components/GoalsByDate";
 import LinkIcon from "@mui/icons-material/Link";
 import { MarketingDrawer } from "../components/MarketingDrawer";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
+import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
+import { transformForCal } from "../utils/transformForCal";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
   const textToCopy = `http://todaysgoal.com/${username}`;
@@ -26,6 +28,7 @@ export const PublicProfile: React.FC = () => {
   };
   const userId = useGetUserId(username || "");
   const goals = useGoals(userId?.data?.user_id || "", false);
+  const data = transformForCal(goals.data);
   const goalsByDate = groupGoalsByDate(goals.data);
   if (goals.isLoading) {
     return (
@@ -78,6 +81,9 @@ export const PublicProfile: React.FC = () => {
             </Box>
           </Box>
           <Typography variant="h4">{username}</Typography>
+        </Box>
+        <Box sx={{mb:2}}>
+          <CustomActivityCalendar data={data.length ? data : [{date:"2025-05-18", count:0, level: 0}]}/>
         </Box>
         <Box>
           {goalsByDate.map((g) => (
