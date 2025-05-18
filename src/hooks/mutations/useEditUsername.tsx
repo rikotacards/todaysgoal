@@ -35,7 +35,7 @@ export const useEditUsername = () => {
     mutationFn: updateGoal,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["usernames"] });
-      enqueueSnackbar('Goal updated', {
+      enqueueSnackbar('Username updated.', {
         variant: "success",
         action: (snackbarId) => (
           <IconButton

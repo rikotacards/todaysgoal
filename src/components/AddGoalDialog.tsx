@@ -96,7 +96,7 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
             </Typography>
           </Box>
           {!isBacklog && <Box>
-            <Typography sx={{ mb: 1 }}>Today, I will:</Typography>
+            <Typography variant='body2' sx={{ mb: 1 }}>Today, I will:</Typography>
           </Box>}
           <TextField
             multiline
@@ -112,7 +112,6 @@ export const AddGoalDialog: React.FC<AddGoalDialogProps> = ({
           >
             {isBacklog ? 'Add to backlog' : 'Add Goal'}
           </Button>
-          <Button>Cancel</Button>
         </DialogContent>
       </Box>
     </Dialog>

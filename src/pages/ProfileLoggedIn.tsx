@@ -102,7 +102,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
         <Box sx={{mt:1}}>
           <CustomActivityCalendar
             data={
-              data.length ? data : [{ count: 0, level: 5, date: "2025-05-18" }]
+              data.length ? data : [{ count: 0, level: 0, date: "2025-05-18" }]
             }
           />
         </Box>
