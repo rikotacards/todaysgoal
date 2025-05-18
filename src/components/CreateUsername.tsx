@@ -43,7 +43,6 @@ export const CreateUsername: React.FC<CreateUsernameProps> = ({
     }
     // check if there is existing username
     const data = await getUsername(username);
-    console.log("dddd", data);
     if (!data) {
       // username does not exist
       setError(false);
