@@ -20,6 +20,7 @@ import { groupGoalsByDate } from "../utils/groupGoalsByDate";
 import { GoalsByDate } from "../components/GoalsByDate";
 import { transformForCal } from "../utils/transformForCal";
 import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
+import { subscribeUser, unsubscribeUser } from "../utils/subscribe";
 interface ProfileLoggedInProps {
   userId: string;
 }
@@ -32,7 +33,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const [isAddOpen, setIsAdd] = React.useState(false);
   const textToCopy = `http://todaysgoal.com/${username.data?.username}`;
   const [isCopied, setIsCopied] = React.useState(false);
-
+  
   const handleCopy = async () => {
     try {
       setIsCopied(true);
@@ -56,6 +57,8 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
   const onClose = () => {
     setOpen(false);
   };
+
+
   if (username.isPending) {
     return (
       <Box sx={{ width: "100%", justifyContent: "center" }}>
@@ -67,6 +70,8 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
     <>
       <Box sx={{ p: 0 }}>
         <Box>
+          <Button onClick={() => subscribeUser()}>Subscribe</Button>
+        <Button onClick={() => unsubscribeUser()}>unsub</Button>
           {!username.data?.username && <CreateUsername />}
           {username.data?.username && (
             <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -93,7 +98,12 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
               >
                 <Typography variant="h4">{username.data.username}</Typography>
                 <Box>
-                  <IconButton color='primary' sx={{ ml: 1 }} size="small" onClick={onClick}>
+                  <IconButton
+                    color="primary"
+                    sx={{ ml: 1 }}
+                    size="small"
+                    onClick={onClick}
+                  >
                     <Edit fontSize="small" />
                   </IconButton>
                 </Box>
