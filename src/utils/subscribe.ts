@@ -37,13 +37,10 @@ export const unsubscribeUser = async () => {
         console.log("User unsubscribed from push notifications.");
 
         // Optionally notify your backend to delete this subscription
-        await fetch("/api/delete-subscription", {
-          method: "POST",
-          body: JSON.stringify({ endpoint: subscription.endpoint }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        await supabase
+          .from("subscriptions")
+          .delete()
+          .eq("endpoint", subscription.endpoint);
       } else {
         console.warn("Unsubscription failed.");
       }

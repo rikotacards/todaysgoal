@@ -130,7 +130,7 @@ export const ProfileLoggedIn: React.FC<ProfileLoggedInProps> = ({ userId }) => {
           Add Goal
         </Button>
         {goalsByDate.map((g) => (
-          <GoalsByDate date={g.date} goals={g.goals} />
+          <GoalsByDate key={g.date} date={g.date} goals={g.goals} />
         ))}
       </Box>
       <Dialog open={open} onClose={onClose}>

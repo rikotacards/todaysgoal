@@ -42,17 +42,27 @@ supabase
         },
       };
       console.log("payload", payload);
-      
       const notificationPayload = {
         title: "New Like",
         message: payload.new?.message,
         userId: payload.new?.user_id,
       };
-      console.log(JSON.stringify(notificationPayload))
-      await webpush.sendNotification(
-        subscriptions,
-        JSON.stringify(notificationPayload)
-      );
+      console.log("payload", payload);
+      for (const s of subscription.data) {
+        const subscriptions = {
+          endpoint: s.endpoint,
+          keys: {
+            auth: s.auth,
+            p256dh: s.p256dh,
+          },
+        };
+
+        console.log(JSON.stringify(notificationPayload));
+        await webpush.sendNotification(
+          subscriptions,
+          JSON.stringify(notificationPayload)
+        );
+      }
     }
   )
   .subscribe();
