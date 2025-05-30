@@ -6,7 +6,9 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
 import { CustomChip } from "./CustomChip";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import { FavoriteBorder } from "@mui/icons-material";
 export const Goal: React.FC<
   IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
 > = ({ description, is_done, id, isOwner, isDemo, created_at }) => {
@@ -31,7 +33,7 @@ export const Goal: React.FC<
     createdAt.getDate()
   );
   const isOverdue = !isDemo && nowDateOnly > createdDateOnly && !is_done;
-  const isDone = isDemo ? demoIsDone : is_done
+  const isDone = isDemo ? demoIsDone : is_done;
   const onClick = () => {
     if (!isOwner && !isDemo) {
       return;
@@ -86,7 +88,11 @@ export const Goal: React.FC<
               onClick={onToggleComplete}
               size="small"
             >
-             {isOverdue ? <HighlightOffIcon color='error'/> : <RadioButtonUncheckedIcon />}
+              {isOverdue ? (
+                <HighlightOffIcon color="error" />
+              ) : (
+                <RadioButtonUncheckedIcon />
+              )}
             </IconButton>
           )}
           <Typography
@@ -103,6 +109,12 @@ export const Goal: React.FC<
               <CustomChip color="#F44336" text="Incomplete" />
             </Box>
           )}
+          <Box sx={{ display: "flex", alignItems: "center", ml: "auto" }}>
+            <Typography variant="body2">25</Typography>
+            <IconButton size='small'>
+              <FavoriteBorder sx={{ p: 0.3 }} color="action" fontSize="small" />
+            </IconButton>
+          </Box>
         </Box>
       </Card>
       <EditGoal
