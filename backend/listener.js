@@ -41,13 +41,12 @@ supabase
           p256dh: subscription.data[0].p256dh,
         },
       };
-      console.log("payload", payload);
       const notificationPayload = {
         title: "New Like",
         message: payload.new?.message,
         userId: payload.new?.user_id,
       };
-      console.log("payload", payload);
+
       for (const s of subscription.data) {
         const subscriptions = {
           endpoint: s.endpoint,
@@ -57,7 +56,6 @@ supabase
           },
         };
 
-        console.log(JSON.stringify(notificationPayload));
         await webpush.sendNotification(
           subscriptions,
           JSON.stringify(notificationPayload)
