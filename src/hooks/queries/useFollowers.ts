@@ -8,7 +8,7 @@ export interface FetchEntriesFilters {
 }
 
 interface IFollower {
-    usernames: any;
+    username: {username: string};
     follower_id: string;
 }
 
@@ -20,7 +20,7 @@ const fetchGoals = async (user_id: string): Promise<IFollower[]> => {
 
   const { data, error } = await q;
   if (error) throw error;
-  return data || [];
+  return data as unknown as IFollower[] || [];
 };
 
 export const useFollowers = (user_id: string) => {
