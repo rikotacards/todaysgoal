@@ -8,24 +8,23 @@ export interface FetchEntriesFilters {
 }
 
 interface IFollower {
-    usernames: any;
-    follower_id: string;
+    following_id: string;
 }
 
 const fetchGoals = async (user_id: string): Promise<IFollower[]> => {
   const q = supabase
     .from("followers")
-    .select("follower_id, usernames:follower_id(username)")
-    .eq("following_id", user_id);
+    .select("following_id, usernames:following_id(username)")
+    .eq("follower_id", user_id);
 
   const { data, error } = await q;
   if (error) throw error;
   return data || [];
 };
 
-export const useFollowers = (user_id: string) => {
+export const useFollowings = (user_id: string) => {
   return useQuery<IFollower[], Error>({
-    queryKey: ["followers", user_id],
+    queryKey: ["followings", user_id],
     queryFn: () => fetchGoals(user_id),
   });
 };

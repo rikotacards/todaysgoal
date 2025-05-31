@@ -1,7 +1,7 @@
 import supabase from "./supabase";
 import { urlBase64ToUint8Array } from "./urlBase";
 
-export const subscribeUser = async () => {
+export const subscribeUser = async (userId: string) => {
   if ("serviceWorker" in navigator && "PushManager" in window) {
     const reg = await navigator.serviceWorker.register("/sw.js");
     const subscription = await reg.pushManager.subscribe({
@@ -15,7 +15,7 @@ export const subscribeUser = async () => {
     const { keys } = subscription.toJSON();
 
     const { error } = await supabase.from("subscriptions").upsert({
-      user_id: "1",
+      user_id: userId,
       endpoint,
       auth: keys?.auth,
       p256dh: keys?.p256dh,
@@ -26,7 +26,7 @@ export const subscribeUser = async () => {
   }
 };
 
-export const unsubscribeUser = async () => {
+export const unsubscribeUser = async (userId: string) => {
   if ("serviceWorker" in navigator && "PushManager" in window) {
     const reg = await navigator.serviceWorker.ready;
     const subscription = await reg.pushManager.getSubscription();
@@ -40,7 +40,8 @@ export const unsubscribeUser = async () => {
         await supabase
           .from("subscriptions")
           .delete()
-          .eq("endpoint", subscription.endpoint);
+          .eq("endpoint", subscription.endpoint)
+          .eq("user_id", userId)
       } else {
         console.warn("Unsubscription failed.");
       }

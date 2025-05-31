@@ -20,15 +20,30 @@ import { transformForCal } from "../utils/transformForCal";
 import { useAuth } from "../hooks/queries/useAuth";
 import { Info } from "@mui/icons-material";
 import { useFollow } from "../hooks/mutations/useFollow";
-import { useFollowers } from "../hooks/queries/useFollowers";
+import { useIsFollowing } from "../hooks/queries/useIsFollowing";
+import { useUnFollow } from "../hooks/mutations/useUnfollow";
+import { Followers } from "../components/Followers";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
-  const follow = useFollow()
- 
+  const userId = useGetUserId(username || "");
   const a = useAuth();
+  const isLoggedIn = !!a.data
+  const follow = useFollow({
+    follower_id: a.data?.user.id || "",
+    following_id: userId.data?.user_id || "",
+  });
+  const unFollow = useUnFollow({
+    user_id: a.data?.user.id || "",
+    following_id: userId.data?.user_id || "",
+  });
+
   const textToCopy = `http://todaysgoal.com/${username}`;
   const [isCopied, setIsCopied] = React.useState(false);
-
+  const isFollowing = useIsFollowing({
+    follower_id: a.data?.user.id || "",
+    following_id: userId.data?.user_id || "",
+  })?.data;
+  console.log(isFollowing)
   const handleCopy = async () => {
     try {
       setIsCopied(true);
@@ -40,21 +55,41 @@ export const PublicProfile: React.FC = () => {
       console.error("Failed to copy:", err);
     }
   };
-  const userId = useGetUserId(username || "");
-   const onFollow = () => {
-    if(!userId.data?.user_id){
-      throw Error('No follower Id available')
+  const onFollow = () => {
+    if (!userId.data?.user_id) {
+      throw Error("No follower Id available");
     }
-    if(!a.data){
-      throw Error('Not authed')
+    if (!a.data) {
+      throw Error("Not authed");
     }
     follow.mutateAsync({
       follower_id: a.data.user.id,
-      following_id: userId.data?.user_id || ""
-    })
-  }
-  const f = useFollowers(userId.data?.user_id || "")
-  console.log(f.data)
+      following_id: userId.data?.user_id || "",
+    });
+  };
+  const onUnFollow = () => {
+    if (!userId.data?.user_id) {
+      throw Error("No follower Id available");
+    }
+    if (!a.data) {
+      throw Error("Not authed");
+    }
+    unFollow.mutateAsync({
+      follower_id: a.data.user.id,
+      following_id: userId.data?.user_id || "",
+    });
+  };
+  const onClick = () => {
+    if(!isLoggedIn){
+      return;
+    }
+    if (isFollowing) {
+      onUnFollow();
+    } else {
+      onFollow();
+    }
+  };
+
   const goals = useGoals(userId?.data?.user_id || "", false);
   const data = transformForCal(goals.data);
   const goalsByDate = groupGoalsByDate(goals.data);
@@ -136,7 +171,13 @@ export const PublicProfile: React.FC = () => {
                     <Typography color="primary" variant="caption">
                       todaysgoal.com/{username}
                     </Typography>
-                    <Typography variant='caption' color='success' sx={{ml:1}}>{isCopied ? "Url copied!" : null}</Typography>
+                    <Typography
+                      variant="caption"
+                      color="success"
+                      sx={{ ml: 1 }}
+                    >
+                      {isCopied ? "Url copied!" : null}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
@@ -158,8 +199,20 @@ export const PublicProfile: React.FC = () => {
           </Box>
           <Typography variant="h4">{username}</Typography>
         </Box>
+        <Box sx={{mb:1}}>
+          <Followers user_id={userId.data.user_id}/>
+        </Box>
         <Box sx={{ mb: 2 }}>
-          <Button onClick={onFollow} size='small' variant='contained' sx={{mb:1, fontWeight: 'bold'}} fullWidth>Follow</Button>
+          <Button
+            onClick={onClick}
+            size="small"
+            variant="contained"
+            loading={isFollowing ? unFollow.isPending : follow.isPending}
+            sx={{ mb: 2, fontWeight: "bold", textTransform: "capitalize" }}
+            fullWidth
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </Button>
           <CustomActivityCalendar
             data={
               data.length ? data : [{ date: "2025-05-18", count: 0, level: 0 }]

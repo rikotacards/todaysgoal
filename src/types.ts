@@ -12,3 +12,8 @@ export interface IAddedGoal {
     is_done: boolean;
     user_id: string;
 }
+
+export interface IFollowers {
+    follower_id: string;
+    following_id: string;
+}

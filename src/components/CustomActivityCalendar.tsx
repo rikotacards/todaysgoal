@@ -16,8 +16,8 @@ export const CustomActivityCalendar: React.FC<CustomActivityCalendarProps> = ({
           red["200"],
           yellow[300],
           green[300],
+          green[400],
           green.A200,
-          green["A700"],
         ],
       }}
       renderBlock={(block, activity) => (
