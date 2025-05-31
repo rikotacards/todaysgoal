@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
+  Button,
   Card,
   CircularProgress,
   IconButton,
@@ -18,8 +19,12 @@ import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
 import { transformForCal } from "../utils/transformForCal";
 import { useAuth } from "../hooks/queries/useAuth";
 import { Info } from "@mui/icons-material";
+import { useFollow } from "../hooks/mutations/useFollow";
+import { useFollowers } from "../hooks/queries/useFollowers";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
+  const follow = useFollow()
+ 
   const a = useAuth();
   const textToCopy = `http://todaysgoal.com/${username}`;
   const [isCopied, setIsCopied] = React.useState(false);
@@ -36,6 +41,20 @@ export const PublicProfile: React.FC = () => {
     }
   };
   const userId = useGetUserId(username || "");
+   const onFollow = () => {
+    if(!userId.data?.user_id){
+      throw Error('No follower Id available')
+    }
+    if(!a.data){
+      throw Error('Not authed')
+    }
+    follow.mutateAsync({
+      follower_id: a.data.user.id,
+      following_id: userId.data?.user_id || ""
+    })
+  }
+  const f = useFollowers(userId.data?.user_id || "")
+  console.log(f.data)
   const goals = useGoals(userId?.data?.user_id || "", false);
   const data = transformForCal(goals.data);
   const goalsByDate = groupGoalsByDate(goals.data);
@@ -140,6 +159,7 @@ export const PublicProfile: React.FC = () => {
           <Typography variant="h4">{username}</Typography>
         </Box>
         <Box sx={{ mb: 2 }}>
+          <Button onClick={onFollow} size='small' variant='contained' sx={{mb:1, fontWeight: 'bold'}} fullWidth>Follow</Button>
           <CustomActivityCalendar
             data={
               data.length ? data : [{ date: "2025-05-18", count: 0, level: 0 }]

@@ -34,15 +34,9 @@ supabase
         .select("*")
         .eq("user_id", payload.new.user_id);
 
-      const subscriptions = {
-        endpoint: subscription.data[0].endpoint,
-        keys: {
-          auth: subscription.data[0].auth,
-          p256dh: subscription.data[0].p256dh,
-        },
-      };
+     
       const notificationPayload = {
-        title: "New Like",
+        title: payload.new?.title || "",
         message: payload.new?.message,
         userId: payload.new?.user_id,
       };
