@@ -9,6 +9,7 @@ import { AuthProvider } from "./providers/AuthProvider";
 import { PublicProfile } from "./pages/PublicProfile";
 import { Settings } from "./pages/Settings";
 import { Backlog } from "./pages/Backlog";
+import { Habits } from "./pages/Habits";
 
 function App() {
   const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ function App() {
                 <Routes>
                   <Route element={<Profile />} path="/" />
                   <Route path="/backlog" element={<Backlog />} />
+                  <Route path="/habits" element={<Habits />} />
 
                   <Route path="/:username" element={<PublicProfile />} />
                   <Route path="/settings" element={<Settings />} />

@@ -24,6 +24,10 @@ const routes = [
     name: "Backlog",
     path: "/backlog",
   },
+  {
+    name: "Habits",
+    path: "/habits",
+  },
 ];
 
 

@@ -15,7 +15,7 @@ interface IFollower {
 const fetchGoals = async (user_id: string): Promise<IFollower[]> => {
   const q = supabase
     .from("followers")
-    .select("follower_id, usernames:follower_id(username)")
+    .select("follower_id, username:follower_id(username)")
     .eq("following_id", user_id);
 
   const { data, error } = await q;
