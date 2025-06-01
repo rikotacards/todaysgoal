@@ -7,34 +7,56 @@ import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
 import { CustomChip } from "./CustomChip";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { FavoriteBorder } from "@mui/icons-material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useLike } from "../hooks/mutations/useLike";
 import { useAuth } from "../hooks/queries/useAuth";
 import { useLikeSummary } from "../hooks/queries/useLikeSummary";
+import { useUnlike } from "../hooks/mutations/useUnlike";
 export const Goal: React.FC<
   IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
 > = ({ description, is_done, id, isOwner, isDemo, created_at, user_id }) => {
   const [demoIsDone, setDemoIsDone] = React.useState(false);
-
-  
   const a = useAuth();
+  const loggedInId = a.data?.user.id;
+  const likeSummary = useLikeSummary(user_id);
+  const likeSummaryObject = likeSummary.data?.get(`${id}`);
+  const likeCount = likeSummaryObject?.total_likes;
+  const hasLiked = likeSummaryObject?.sender_ids.includes(loggedInId || "");
   const isDemoOnToggle = () => {
     setDemoIsDone(!demoIsDone);
   };
-  const like = useLike();
-  const onLike = (e: React.SyntheticEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    if (isDemo) {
+  const unlike = useUnlike({
+    like_receiver_id: user_id,
+    liked_content_id: `${id}`,
+    like_sender_id: loggedInId || "",
+  });
+
+  const like = useLike({
+    like_receiver_id: user_id,
+    liked_content_id: `${id}`,
+    like_sender_id: loggedInId || "",
+  });
+  const toggleLike = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isDemo || !loggedInId) {
       return;
     }
     if (!a.data) {
       return;
     }
-    like.mutateAsync({
-      like_receiver_id: user_id,
-      like_sender_id: a.data.user.id,
-      liked_content_id: `${id}`,
-    });
+    if (hasLiked) {
+      unlike.mutateAsync({
+        like_receiver_id: user_id,
+        like_sender_id: a.data.user.id,
+        liked_content_id: `${id}`,
+      });
+    } else {
+      like.mutateAsync({
+        like_receiver_id: user_id,
+        like_sender_id: a.data.user.id,
+        liked_content_id: `${id}`,
+      });
+    }
   };
   const [open, setOpen] = React.useState(false);
   const now = new Date();
@@ -129,9 +151,20 @@ export const Goal: React.FC<
             </Box>
           )}
           <Box sx={{ display: "flex", alignItems: "center", ml: "auto" }}>
-            <IconButton onClick={onLike} size="small">
-              <FavoriteBorder sx={{ p: 0.3 }} color="action" fontSize="small" />
-            </IconButton>
+            <Typography variant="caption">{likeCount}</Typography>
+            {hasLiked ? (
+              <IconButton onClick={toggleLike} size="small">
+                <Favorite color="error" sx={{ p: 0.3 }} fontSize="small" />
+              </IconButton>
+            ) : (
+              <IconButton onClick={toggleLike} size="small">
+                <FavoriteBorder
+                  sx={{ p: 0.3 }}
+                  color="action"
+                  fontSize="small"
+                />
+              </IconButton>
+            )}
           </Box>
         </Box>
       </Card>

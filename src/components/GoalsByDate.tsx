@@ -8,6 +8,7 @@ interface GoalsByDateProps {
   goals: IAddedGoal[];
   isOwner?: boolean;
   isDemo?: boolean;
+
 }
 const options: Intl.DateTimeFormatOptions = {
   weekday: "short",

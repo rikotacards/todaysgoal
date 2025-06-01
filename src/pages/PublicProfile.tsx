@@ -26,6 +26,7 @@ import { Followers } from "../components/Followers";
 export const PublicProfile: React.FC = () => {
   const { username } = useParams();
   const userId = useGetUserId(username || "");
+
   const a = useAuth();
   const isLoggedIn = !!a.data;
   const isOwner = userId.data?.user_id == a?.data?.user.id;
