@@ -7,16 +7,32 @@ import { EditGoal } from "./EditGoal";
 import { useEditGoal } from "../hooks/mutations/useEditGoal";
 import { CustomChip } from "./CustomChip";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import { FavoriteBorder } from "@mui/icons-material";
+import { useLike } from "../hooks/mutations/useLike";
+import { useAuth } from "../hooks/queries/useAuth";
 export const Goal: React.FC<
   IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
-> = ({ description, is_done, id, isOwner, isDemo, created_at }) => {
+> = ({ description, is_done, id, isOwner, isDemo, created_at, user_id }) => {
   const [demoIsDone, setDemoIsDone] = React.useState(false);
+  const a = useAuth();
   const isDemoOnToggle = () => {
     setDemoIsDone(!demoIsDone);
   };
-
+  const like = useLike();
+  const onLike = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    if (isDemo) {
+      return;
+    }
+    if (!a.data) {
+      return;
+    }
+    like.mutateAsync({
+      like_receiver_id: user_id,
+      like_sender_id: a.data.user.id,
+      liked_content_id: `${id}`,
+    });
+  };
   const [open, setOpen] = React.useState(false);
   const now = new Date();
   const createdAt = new Date(created_at);
@@ -110,8 +126,7 @@ export const Goal: React.FC<
             </Box>
           )}
           <Box sx={{ display: "flex", alignItems: "center", ml: "auto" }}>
-            <Typography variant="body2">25</Typography>
-            <IconButton size='small'>
+            <IconButton onClick={onLike} size="small">
               <FavoriteBorder sx={{ p: 0.3 }} color="action" fontSize="small" />
             </IconButton>
           </Box>

@@ -15,7 +15,7 @@ const insertFollow = async (args: IInsertFollow): Promise<void> => {
   const { error } = await supabase.from("likes").insert({
     like_sender_id: args.like_sender_id, // person
     like_receiver_id: args.like_receiver_id,
-    like_content_id: args.liked_content_id
+    liked_content_id: args.liked_content_id
   });
 
   if (error) throw error;
@@ -36,13 +36,9 @@ export const useLike = (
   const { enqueueSnackbar } = useSnackbar();
   return useMutation<void, Error, IInsertFollow>({
     mutationFn: insertFollow, // ✅ CORRECT way to provide the function
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["goals", args.like_receiver_id] });
-
-      enqueueSnackbar("Liked!", { variant: "success" });
-    },
+   
     onError: () => {
-      enqueueSnackbar("Failed to follow", { variant: "default" });
+      enqueueSnackbar("Failed to Like", { variant: "default" });
     },
   });
 };

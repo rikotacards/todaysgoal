@@ -21,7 +21,7 @@ export const Goals: React.FC<GoalsProps> = ({isDemo, isOwner, goals }) => {
       created_at={g.created_at}
       description={g.description}
       is_done={g.is_done}
-      user_id={""}
+      user_id={g.user_id || ""}
     />
   ));
   if(displayGoals?.length === 0){
