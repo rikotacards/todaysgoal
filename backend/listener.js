@@ -14,10 +14,10 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 );
 
-console.log('Getting auth')
-const { data} = await supabase.auth.getUser();
+console.log("Getting auth");
+const { data } = await supabase.auth.getUser();
 
-console.log('data', data)
+console.log("data", data);
 console.log("🔄 Listening to notifications_queue...");
 // Subscription object received from client
 
@@ -32,16 +32,23 @@ supabase
     },
     async (payload) => {
       console.log("📬 New row:", payload.new);
-      
+
       const subscription = await supabase
         .from("subscriptions")
         .select("*")
         .eq("user_id", payload.new.recipient_id);
 
-     
+      const usernames = await supabase
+        .from("usernames")
+        .select("username")
+        .eq("user_id", payload.new.user_id)
+        .maybeSingle();
+      console.log(usernames.data);
+      const message =
+        `${usernames.data.username} ${payload.new.message}`.toLocaleLowerCase();
       const notificationPayload = {
         title: payload.new?.title || "",
-        message: payload.new?.message,
+        message,
         userId: payload.new?.user_id,
       };
 
@@ -53,7 +60,7 @@ supabase
             p256dh: s.p256dh,
           },
         };
-       
+
         await webpush.sendNotification(
           subscriptions,
           JSON.stringify(notificationPayload)
