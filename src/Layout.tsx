@@ -70,7 +70,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         elevation={0}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Tabs value={value} onChange={(_, v) => setValue(v)}>
+          <Tabs variant="scrollable" value={value} onChange={(_, v) => setValue(v)}>
             {displayedRoutes.map((t) => (
               <Tab
                 sx={{ textTransform: "capitalize" }}
