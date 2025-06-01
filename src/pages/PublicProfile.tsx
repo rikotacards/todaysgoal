@@ -18,7 +18,7 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { CustomActivityCalendar } from "../components/CustomActivityCalendar";
 import { transformForCal } from "../utils/transformForCal";
 import { useAuth } from "../hooks/queries/useAuth";
-import { Info } from "@mui/icons-material";
+import {  Info } from "@mui/icons-material";
 import { useFollow } from "../hooks/mutations/useFollow";
 import { useIsFollowing } from "../hooks/queries/useIsFollowing";
 import { useUnFollow } from "../hooks/mutations/useUnfollow";
@@ -27,7 +27,8 @@ export const PublicProfile: React.FC = () => {
   const { username } = useParams();
   const userId = useGetUserId(username || "");
   const a = useAuth();
-  const isLoggedIn = !!a.data
+  const isLoggedIn = !!a.data;
+  const isOwner = userId.data?.user_id == a?.data?.user.id;
   const follow = useFollow({
     follower_id: a.data?.user.id || "",
     following_id: userId.data?.user_id || "",
@@ -43,7 +44,7 @@ export const PublicProfile: React.FC = () => {
     follower_id: a.data?.user.id || "",
     following_id: userId.data?.user_id || "",
   })?.data;
-  console.log(isFollowing)
+
   const handleCopy = async () => {
     try {
       setIsCopied(true);
@@ -80,7 +81,7 @@ export const PublicProfile: React.FC = () => {
     });
   };
   const onClick = () => {
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
       return;
     }
     if (isFollowing) {
@@ -93,7 +94,7 @@ export const PublicProfile: React.FC = () => {
   const goals = useGoals(userId?.data?.user_id || "", false);
   const data = transformForCal(goals.data);
   const goalsByDate = groupGoalsByDate(goals.data);
-  if (goals.isLoading) {
+  if (goals.isLoading || userId.isLoading) {
     return (
       <Box
         sx={{
@@ -199,20 +200,26 @@ export const PublicProfile: React.FC = () => {
           </Box>
           <Typography variant="h4">{username}</Typography>
         </Box>
-        <Box sx={{mb:1}}>
-          <Followers user_id={userId.data.user_id}/>
+        <Box sx={{ mb: 1 }}>
+          <Followers user_id={userId.data.user_id} />
         </Box>
         <Box sx={{ mb: 2 }}>
-          <Button
-            onClick={onClick}
-            size="small"
-            variant="contained"
-            loading={isFollowing ? unFollow.isPending : follow.isPending}
-            sx={{ mb: 2, fontWeight: "bold", textTransform: "capitalize" }}
-            fullWidth
-          >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </Button>
+          {isOwner ? (
+            <Button disableElevation variant='contained' color='inherit' fullWidth size='small' sx={{mb:2, textTransform: 'capitalize'}}>Share profile</Button>
+          ) : (
+            <Button
+              onClick={onClick}
+              size="small"
+              color={isFollowing ? "inherit" : "primary"}
+              disableElevation={!!isFollowing}
+              variant="contained"
+              loading={isFollowing ? unFollow.isPending : follow.isPending}
+              sx={{ mb: 2, textTransform: "capitalize" }}
+              fullWidth
+            >
+              {isFollowing ? "Following" : "Follow"}
+            </Button>
+          )}
           <CustomActivityCalendar
             data={
               data.length ? data : [{ date: "2025-05-18", count: 0, level: 0 }]

@@ -44,7 +44,6 @@ export const Followers: React.FC<FollowersProps> = ({ user_id }) => {
       onClick={() => go(f.username?.username)}
     />
   ));
-  console.log("f", followers.data);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
@@ -58,21 +57,22 @@ export const Followers: React.FC<FollowersProps> = ({ user_id }) => {
         }}
       >
         <Typography fontWeight={"bold"}>{followersCount}</Typography>
-        <Typography variant="caption">Followers</Typography>
+        <Typography color='text.secondary' variant="caption">Followers</Typography>
       </Box>
       <Box
         onClick={() => onClick("following")}
         sx={{ cursor: "pointer", display: "flex", flexDirection: "column" }}
       >
         <Typography fontWeight={"bold"}>{followingsCount}</Typography>
-        <Typography variant="caption">Following</Typography>
+        <Typography color='text.secondary' variant="caption">Following</Typography>
       </Box>
       <Dialog open={componentName === "following"} onClose={onClose}>
-        <Toolbar>
-          <Typography sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+        <Toolbar >
+            <Box sx={{display: 'flex', flex:1}}/>
+          <Typography sx={{alignSelf: 'center', textTransform: "capitalize", fontWeight: "bold" }}>
             {componentName}
           </Typography>
-          <Box sx={{ ml: "auto" }}>
+          <Box sx={{display: 'flex', flex:1, ml: "auto", justifyContent: 'flex-end' }}>
             <IconButton onClick={onClose}>
               <Close />
             </IconButton>
