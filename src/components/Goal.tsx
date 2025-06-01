@@ -159,7 +159,7 @@ export const Goal: React.FC<
             ) : (
               <IconButton onClick={toggleLike} size="small">
                 <FavoriteBorder
-                  sx={{ p: 0.3 }}
+                  sx={{ p: 0.3, color:t => t.palette.divider }}
                   color="action"
                   fontSize="small"
                 />
