@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
 import { isInstagram } from "./utils/isInstagram";
 import { useGetUserName } from "./hooks/queries/useGetUsername";
+import { Visibility } from "@mui/icons-material";
 
 const routes = [
   {
