@@ -10,10 +10,13 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { FavoriteBorder } from "@mui/icons-material";
 import { useLike } from "../hooks/mutations/useLike";
 import { useAuth } from "../hooks/queries/useAuth";
+import { useLikeSummary } from "../hooks/queries/useLikeSummary";
 export const Goal: React.FC<
   IAddedGoal & { isOwner?: boolean; isDemo?: boolean }
 > = ({ description, is_done, id, isOwner, isDemo, created_at, user_id }) => {
   const [demoIsDone, setDemoIsDone] = React.useState(false);
+
+  
   const a = useAuth();
   const isDemoOnToggle = () => {
     setDemoIsDone(!demoIsDone);
