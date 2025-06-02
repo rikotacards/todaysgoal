@@ -121,7 +121,7 @@ export const Goal: React.FC<
         >
           {isDone ? (
             <IconButton onClick={onToggleComplete} color="success" size="small">
-              <CheckCircleIcon fontSize="small" />
+              <CheckCircleIcon  />
             </IconButton>
           ) : (
             <IconButton
@@ -132,7 +132,7 @@ export const Goal: React.FC<
               {isOverdue ? (
                 <HighlightOffIcon color="error" />
               ) : (
-                <RadioButtonUncheckedIcon fontSize="small" />
+                <RadioButtonUncheckedIcon  />
               )}
             </IconButton>
           )}
